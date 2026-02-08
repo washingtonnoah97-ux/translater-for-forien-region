@@ -1,0 +1,8 @@
+{
+  "name": "Nebula Gaming Portal",
+  "description": "A sleek, dark-themed gaming portal featuring a curated library of web-based games with category filtering, instant search, and theater-mode viewing.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

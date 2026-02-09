@@ -1,78 +1,411 @@
 
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nebula Gaming Portal</title>
-    <!-- Favicon fix to stop 404 errors -->
+    <!-- Favicon fix -->
     <link rel="icon" href="data:,">
-    <!-- Tailwind CSS with custom configuration -->
+    
+    <!-- Scripts: React, ReactDOM, Babel (for JSX), Tailwind, and Lucide -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              slate: {
-                950: '#020617',
-              }
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: { 950: '#020617' }
+                    }
+                }
             }
-          }
         }
-      }
     </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #020617; /* slate-950 */
-        color: #f1f5f9;
-        margin: 0;
-        overflow-x: hidden;
-      }
-      /* Custom scrollbar for a premium look */
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: #020617; }
-      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-      ::-webkit-scrollbar-thumb:hover { background: #334155; }
-      
-      .glass {
-        background: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      
-      .game-card-hover:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.1), 0 10px 10px -5px rgba(124, 58, 237, 0.04);
-      }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 
-      @keyframes slideUp {
-        from { transform: translateY(100%); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
-      .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
+    <style type="text/css">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .game-card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(124, 58, 237, 0.2);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+        
+        .admin-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
-    <!-- React & Dependencies via ESM -->
-    <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@19.2.4",
-    "react-dom": "https://esm.sh/react-dom@19.2.4",
-    "react-dom/client": "https://esm.sh/react-dom@19.2.4/client",
-    "lucide-react": "https://esm.sh/lucide-react@0.460.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
-  }
-}
-</script>
-  </head>
-  <body>
+</head>
+<body>
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
-  </body>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        // --- Constants & Types ---
+        const CATEGORIES = ['All', 'Action', 'Sports', 'Puzzle', 'Retro', 'Strategy'];
+        const STORAGE_KEY = 'nebula_my_games';
+
+        const DEFAULT_GAMES = [
+            {
+                id: 'slope-game',
+                title: 'Slope',
+                category: 'Action',
+                thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
+                gameUrl: 'https://kdata1.com/2020/05/slope/',
+                description: 'The ultimate 3D running game. Control a ball and avoid obstacles as you speed down a slope.'
+            },
+            {
+                id: 'eaglecraft-game',
+                title: 'Eaglecraft',
+                category: 'Action',
+                thumbnail: 'https://images.unsplash.com/photo-1615655114865-4cc1bda5901e?auto=format&fit=crop&q=80&w=600',
+                gameUrl: 'https://eaglecraft.net/play/',
+                description: 'A Minecraft web-port. Explore, build, and survive in this blocky adventure right in your browser.'
+            }
+        ];
+
+        // --- Helper: Lucide Icon Component ---
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const iconRef = useRef(null);
+            useEffect(() => {
+                if (iconRef.current) {
+                    iconRef.current.innerHTML = lucide.createIcons({
+                        icons: { [name]: true },
+                        attrs: { strokeWidth: 2, size: size, class: className }
+                    });
+                }
+            }, [name, size, className]);
+            return <span ref={iconRef} className="inline-flex items-center justify-center" />;
+        };
+
+        // --- Main App Component ---
+        const App = () => {
+            const [myGames, setMyGames] = useState([]);
+            const [activeCategory, setActiveCategory] = useState('All');
+            const [searchQuery, setSearchQuery] = useState('');
+            const [selectedGame, setSelectedGame] = useState(null);
+            const [isAdminVisible, setIsAdminVisible] = useState(false);
+            const [sidebarOpen, setSidebarOpen] = useState(true);
+
+            // Load Games
+            useEffect(() => {
+                const loadGames = () => {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        setMyGames(JSON.parse(saved));
+                    } else {
+                        setMyGames(DEFAULT_GAMES);
+                    }
+                };
+                loadGames();
+            }, []);
+
+            // Save Games
+            const saveGame = (title, category, url, thumb, desc) => {
+                const newGame = {
+                    id: Date.now().toString(),
+                    title,
+                    category,
+                    gameUrl: url,
+                    thumbnail: thumb,
+                    description: desc
+                };
+                const updatedList = [newGame, ...myGames];
+                setMyGames(updatedList);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+            };
+
+            const deleteGame = (id, e) => {
+                e.stopPropagation();
+                if (confirm('Are you sure you want to remove this game?')) {
+                    const updatedList = myGames.filter(g => g.id !== id);
+                    setMyGames(updatedList);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+                }
+            };
+
+            // Stealth Admin Feature
+            useEffect(() => {
+                let keys = "";
+                const handleKeyDown = (e) => {
+                    keys += e.key.toLowerCase();
+                    if (keys.endsWith("admin")) {
+                        setIsAdminVisible(prev => !prev);
+                        keys = "";
+                    }
+                    if (keys.length > 10) keys = keys.slice(-5);
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, []);
+
+            const filteredGames = useMemo(() => {
+                return myGames.filter(g => {
+                    const matchesCat = activeCategory === 'All' || g.category === activeCategory;
+                    const matchesSearch = g.title.toLowerCase().includes(searchQuery.toLowerCase());
+                    return matchesCat && matchesSearch;
+                });
+            }, [myGames, activeCategory, searchQuery]);
+
+            return (
+                <div className="min-h-screen bg-slate-950 text-slate-100 flex overflow-x-hidden">
+                    {/* Navbar */}
+                    <nav className="fixed top-0 left-0 right-0 h-16 glass border-b border-slate-800/50 z-50 px-6 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 text-slate-400 hover:text-white transition-colors lg:hidden">
+                                <Icon name="Menu" />
+                            </button>
+                            <div className="flex items-center gap-2">
+                                <div className="bg-violet-600 p-2 rounded-xl shadow-lg shadow-violet-600/20">
+                                    <Icon name="Gamepad2" className="text-white" />
+                                </div>
+                                <span className="text-xl font-black tracking-tighter">NEBULA</span>
+                            </div>
+                        </div>
+
+                        <div className="flex-1 max-w-xl mx-8 relative hidden md:block">
+                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+                                <Icon name="Search" size={18} />
+                            </div>
+                            <input 
+                                type="text" 
+                                placeholder="Search games..." 
+                                className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-violet-500 outline-none transition-all"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            {isAdminVisible && <span className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest animate-pulse">Admin Mode</span>}
+                            <button onClick={() => setIsAdminVisible(!isAdminVisible)} className={`p-2 rounded-full transition-colors ${isAdminVisible ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
+                                <Icon name="Settings" size={20} />
+                            </button>
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-bold">G</div>
+                        </div>
+                    </nav>
+
+                    {/* Sidebar */}
+                    <aside className={`fixed left-0 top-16 bottom-0 bg-slate-950 border-r border-slate-900 transition-all z-40 ${sidebarOpen ? 'w-64' : 'w-0 -translate-x-full'}`}>
+                        <div className="p-6 space-y-2">
+                            {CATEGORIES.map(cat => (
+                                <button
+                                    key={cat}
+                                    onClick={() => {
+                                        setActiveCategory(cat);
+                                        if (window.innerWidth < 1024) setSidebarOpen(false);
+                                    }}
+                                    className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeCategory === cat ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/20' : 'text-slate-400 hover:bg-slate-900 hover:text-white'}`}
+                                >
+                                    <Icon name={getCategoryIcon(cat)} size={18} />
+                                    <span className="font-medium text-sm">{cat}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </aside>
+
+                    {/* Main Content */}
+                    <main className={`flex-1 pt-24 px-8 pb-12 transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
+                        <div className="max-w-7xl mx-auto space-y-10">
+                            
+                            {/* Admin Panel (Hidden) */}
+                            {isAdminVisible && (
+                                <div className="animate-slide-up bg-slate-900/80 border border-emerald-500/30 rounded-3xl p-8 backdrop-blur-xl mb-12 admin-glow">
+                                    <div className="flex items-center justify-between mb-8">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg"><Icon name="Plus" size={20} /></div>
+                                            <h2 className="text-2xl font-bold">Manage Library</h2>
+                                        </div>
+                                        <button onClick={() => setIsAdminVisible(false)} className="p-2 hover:bg-slate-800 rounded-full text-slate-500"><Icon name="X" size={20} /></button>
+                                    </div>
+                                    <AdminForm onSave={saveGame} />
+                                </div>
+                            )}
+
+                            {/* Hero */}
+                            {activeCategory === 'All' && !searchQuery && (
+                                <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-slate-900 to-indigo-950 p-12 border border-slate-800/50 shadow-2xl">
+                                    <div className="relative z-10 max-w-2xl">
+                                        <span className="px-3 py-1 bg-violet-600/20 text-violet-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-violet-500/20 mb-6 inline-block">Featured</span>
+                                        <h1 className="text-5xl font-black mb-6 leading-tight">Your Digital <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">Paradise.</span></h1>
+                                        <p className="text-slate-400 text-lg mb-8 leading-relaxed">Play Slope, Eaglecraft, and more. Use the secret phrase 'admin' to add your own links to the portal.</p>
+                                        <button onClick={() => setSelectedGame(myGames[0])} className="bg-violet-600 hover:bg-violet-500 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105 shadow-xl shadow-violet-600/20 flex items-center gap-2">
+                                            <Icon name="Play" fill="currentColor" /> Play Now
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Game Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                                {filteredGames.map(game => (
+                                    <div 
+                                        key={game.id} 
+                                        onClick={() => setSelectedGame(game)}
+                                        className="group game-card-hover bg-slate-900/40 rounded-3xl border border-slate-800/50 overflow-hidden cursor-pointer transition-all duration-500"
+                                    >
+                                        <div className="aspect-[4/3] relative overflow-hidden">
+                                            <img src={game.thumbnail} alt={game.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60"></div>
+                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                                                <div className="w-14 h-14 bg-white text-slate-950 rounded-full flex items-center justify-center shadow-2xl">
+                                                    <Icon name="Play" fill="currentColor" size={24} />
+                                                </div>
+                                            </div>
+                                            {isAdminVisible && (
+                                                <button onClick={(e) => deleteGame(game.id, e)} className="absolute top-4 right-4 p-2 bg-rose-600 text-white rounded-xl hover:bg-rose-500">
+                                                    <Icon name="Trash2" size={16} />
+                                                </button>
+                                            )}
+                                        </div>
+                                        <div className="p-6">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h3 className="text-lg font-bold group-hover:text-violet-400 transition-colors">{game.title}</h3>
+                                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{game.category}</span>
+                                            </div>
+                                            <p className="text-sm text-slate-500 line-clamp-2">{game.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {filteredGames.length === 0 && (
+                                <div className="text-center py-20 bg-slate-900/20 rounded-3xl border-2 border-dashed border-slate-800">
+                                    <Icon name="Search" size={48} className="text-slate-800 mb-4" />
+                                    <h3 className="text-xl font-bold text-slate-500">No matching games found</h3>
+                                </div>
+                            )}
+                        </div>
+                    </main>
+
+                    {/* Theater Mode */}
+                    {selectedGame && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black animate-in fade-in duration-300">
+                            <div className="relative w-full h-full flex flex-col">
+                                <header className="h-16 bg-slate-950 border-b border-slate-800 flex items-center justify-between px-6">
+                                    <div className="flex items-center gap-4">
+                                        <button onClick={() => setSelectedGame(null)} className="p-2 text-slate-400 hover:text-white transition-colors"><Icon name="X" size={24} /></button>
+                                        <h2 className="font-bold text-lg">{selectedGame.title}</h2>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => setSelectedGame(null)} className="px-6 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl transition-colors">Exit Theater</button>
+                                    </div>
+                                </header>
+                                <div className="flex-1 bg-black">
+                                    <iframe 
+                                        src={selectedGame.gameUrl} 
+                                        className="w-full h-full border-0" 
+                                        allow="fullscreen; autoplay;" 
+                                        scrolling="no"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const getCategoryIcon = (cat) => {
+            switch(cat) {
+                case 'All': return 'LayoutGrid';
+                case 'Action': return 'Sword';
+                case 'Sports': return 'Trophy';
+                case 'Puzzle': return 'Puzzle';
+                case 'Retro': return 'RotateCcw';
+                case 'Strategy': return 'Target';
+                default: return 'Gamepad2';
+            }
+        };
+
+        const AdminForm = ({ onSave }) => {
+            const [title, setTitle] = useState('');
+            const [cat, setCat] = useState('Action');
+            const [url, setUrl] = useState('');
+            const [thumb, setThumb] = useState('');
+            const [desc, setDesc] = useState('');
+
+            const handleAdd = (e) => {
+                e.preventDefault();
+                onSave(title, cat, url, thumb, desc);
+                setTitle(''); setUrl(''); setThumb(''); setDesc('');
+                alert('Game saved successfully!');
+            };
+
+            return (
+                <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="space-y-4">
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Title</label>
+                            <input required value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="My Awesome Game" className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500" />
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Category</label>
+                            <select value={cat} onChange={e => setCat(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 appearance-none">
+                                {CATEGORIES.filter(c => c !== 'All').map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Game URL</label>
+                            <input required value={url} onChange={e => setUrl(e.target.value)} type="url" placeholder="https://..." className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500" />
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Thumbnail URL</label>
+                            <input required value={thumb} onChange={e => setThumb(e.target.value)} type="url" placeholder="https://..." className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500" />
+                        </div>
+                    </div>
+                    <div className="space-y-4 flex flex-col">
+                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Description</label>
+                        <textarea required value={desc} onChange={e => setDesc(e.target.value)} placeholder="Add a short description..." className="w-full flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 resize-none" />
+                        <button type="submit" className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <Icon name="Save" size={18} /> Add to Library
+                        </button>
+                    </div>
+                </form>
+            );
+        };
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+    </script>
+</body>
 </html>

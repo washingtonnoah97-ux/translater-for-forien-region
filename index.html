@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Research Portal - Nebula Analysis</title>
+    <title>Academic Research Portal - Pet Morphology</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -33,12 +33,14 @@
             color: #1a1a1a;
             font-family: 'Libre Baskerville', serif;
             line-height: 1.8;
-            padding: 4rem 2rem;
+            padding: 6rem 2rem;
             min-height: 100vh;
         }
-        #public-project h1 { font-weight: 700; border-bottom: 2px solid #333; margin-bottom: 2rem; }
-        #public-project h2 { font-weight: 700; margin-top: 2rem; border-bottom: 1px solid #ddd; }
-        .citation { color: #555; font-size: 0.9rem; font-style: italic; }
+        #public-project h1 { font-weight: 700; border-bottom: 3px solid #111; margin-bottom: 2rem; padding-bottom: 1rem; }
+        #public-project h2 { font-weight: 700; margin-top: 3rem; border-bottom: 1px solid #ddd; margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
+        #public-project h3 { font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #444; }
+        .citation { color: #666; font-size: 0.85rem; font-style: italic; }
+        .paper-meta { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 1rem 0; margin-bottom: 2rem; }
 
         /* --- Secret Portal Styles --- */
         #secret-portal {
@@ -130,6 +132,35 @@
         .panic-btn:hover {
             background: rgba(255, 255, 255, 0.1);
         }
+        /* BIG NOTICEABLE PANIC BUTTON */
+        .panic-btn-top {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #ef4444;
+            border: 2px solid #b91c1c;
+            color: white;
+            font-weight: 900;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10000;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s;
+        }
+        .panic-btn-top:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+        .panic-btn-top:active {
+            transform: scale(0.9);
+            background: #991b1b;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -137,55 +168,135 @@
     <!-- PUBLIC: The "Boring School Project" -->
     <div id="public-project">
         <div class="max-w-3xl mx-auto">
-            <header class="mb-12">
-                <p class="text-sm uppercase tracking-widest text-slate-500 mb-2">Department of Astrophysical Sciences</p>
-                <h1 class="text-4xl">Comparative Analysis of Emission Nebulae and Their Ionization Fronts</h1>
-                <div class="flex justify-between items-center text-sm text-slate-600 italic">
-                    <p>Authored by: Senior Research Group 4A</p>
-                    <p>Date: October 14, 2024</p>
+            <header class="mb-8">
+                <p class="text-sm uppercase tracking-widest text-slate-400 mb-2">Journal of Applied Adorability & Domesticated Aesthetics</p>
+                <h1 class="text-4xl md:text-5xl leading-tight">Quantifying the Socio-Biological Impact of Extreme Cuteness: A Multi-Modal Study of Domestic Canines and Felines</h1>
+                
+                <div class="paper-meta flex flex-wrap justify-between items-center text-sm text-slate-600 italic">
+                    <div class="mb-2 md:mb-0">
+                        <span class="font-bold">Principal Investigators:</span> Emily Rosewood, Dr. Barkington III, Sir Meows-a-Lot
+                    </div>
+                    <div>
+                        <span class="font-bold">Published:</span> October 22, 2024
+                    </div>
                 </div>
             </header>
 
-            <section class="mb-8">
-                <h2 class="text-xl mb-4">Abstract</h2>
-                <p>
-                    This paper investigates the morphological evolution of diffuse nebulae, focusing specifically on the interaction between ultraviolet radiation from embedded massive stars and the surrounding interstellar medium (ISM). Through spectral analysis of H II regions, we identify key indicators of hydrodynamic instabilities that lead to the formation of pillar-like structures.
+            <section class="mb-12">
+                <h2 class="text-2xl">Abstract</h2>
+                <p class="text-justify indent-8">
+                    Domestic animals, particularly <i>Canis lupus familiaris</i> and <i>Felis catus</i>, have evolved sophisticated biological mechanisms to elicit nurturing responses from human subjects. This longitudinal study evaluates the morphological determinants of "cuteness"—defined herein by the Broad-Spectrum Adorability Index (BSAI). Key variables include fur density (fluffiness), ocular-to-cranium ratios (the "big eyes" factor), and involuntary tongue protrusion (the "blep" phenomenon). Our findings suggest a direct positive correlation between pet fluffiness and the immediate release of oxytocin in mammalian observers. The implications for domestic treat distribution and furniture accessibility are significant.
                     <!-- HIDDEN TRIGGER: Inside the abstract text -->
                     <span id="unlock-trigger" class="stealth-trigger" title="End of Abstract"></span>
                 </p>
             </section>
 
-            <section class="mb-8">
-                <h2 class="text-xl mb-4">1. Introduction</h2>
-                <p>
-                    Nebulae serve as the primary nurseries for stellar formation in the Milky Way. The ionization of hydrogen atoms by high-energy photons creates localized zones of thermal expansion, which in turn generate high-pressure fronts that compress neighboring cold molecular clouds.
+            <section class="mb-12">
+                <h2 class="text-2xl">1. Theoretical Framework of Fluffiness</h2>
+                <p class="mb-4">
+                    The concept of "fluffiness" transcends mere tactile sensation; it is a visual language of comfort and safety. From a physiological standpoint, a fluffy coat provides a high degree of "squishability," which is a primary metric for pet value in modern households. We categorize fluffiness into three distinct phases:
                 </p>
-                <div class="my-8 p-4 border border-slate-200 rounded relative group">
-                    <img src="https://images.unsplash.com/photo-1464802686167-b939a67e06a1?auto=format&fit=crop&q=10&w=800" alt="Nebula Reference Grayscale" class="w-full h-auto grayscale opacity-40">
-                    <p class="text-xs mt-2 text-center text-slate-400">Fig 1.1: Thermal mapping of the Carina Nebula (X-ray spectrum)</p>
+                <ul class="list-disc ml-10 mb-6 space-y-2">
+                    <li><strong>Phase 1: The Silky Smooth.</strong> Typical of Short-haired breeds, emphasizing sleekness and speed.</li>
+                    <li><strong>Phase 2: The Moderate Tussle.</strong> Common in Wire-haired Terriers and Maine Coons, suggesting rugged cuteness.</li>
+                    <li><strong>Phase 3: The Maximum Floof.</strong> Seen in Samoyeds and Persian cats, where the specimen is more fur than organic matter.</li>
+                </ul>
+                <div class="my-10 bg-slate-50 border border-slate-200 p-6 rounded-lg text-center">
+                    <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&q=80&w=800" alt="Maximum Floof specimen" class="w-full h-auto rounded shadow-lg mb-4">
+                    <p class="text-sm text-slate-500 italic">Fig 1.1: Visual documentation of a Phase 3 Floof Cluster (juvenile felines).</p>
+                </div>
+                <p>
+                    Interestingly, as fluffiness increases, the visibility of the specimen's structural features decreases, often resulting in a "sentient cloud" appearance. This aesthetic shift has been shown to bypass critical thinking centers in the human brain, leading to immediate declarations of "Look at that little guy!" and "I just can't even."
+                </p>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl">2. The "Puppy Eyes" Phenomenon & Ocular Dominance</h2>
+                <p class="mb-4">
+                    Ocular dominance plays a critical role in the human-animal bond. Large, dark, liquid eyes mimic the proportions of human infants, activating ancient protective instincts. In canines, the development of the levator anguli oculi medialis muscle allows for the subtle lifting of the inner eyebrows—creating the look of sadness or profound need.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                    <div class="text-center">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600" alt="Golden Retriever puppy eyes" class="w-full h-64 object-cover rounded shadow-md mb-2">
+                        <p class="text-xs text-slate-500 italic">Exhibit A: Canine specimen utilizing ocular persuasion to secure treats.</p>
+                    </div>
+                    <div class="text-center">
+                        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=600" alt="Cat big eyes" class="w-full h-64 object-cover rounded shadow-md mb-2">
+                        <p class="text-xs text-slate-500 italic">Exhibit B: Feline specimen demonstrating the "pre-zoomie" dilation effect.</p>
+                    </div>
+                </div>
+                <p>
+                    Our data indicates that a sustained 5-second gaze from a canine specimen increases the likelihood of human treat-delivery by 87.4%. Feline specimens, however, tend to use a "slow blink" technique, which serves a similar function but with an added layer of psychological superiority.
+                </p>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl">3. Statistical Analysis of "Blep" and "Mlem" Frequencies</h2>
+                <p>
+                    A "blep" is defined as a small portion of the tongue remaining visible after grooming or during a state of extreme relaxation. This linguistic and physical quirk is highly sought after by social media researchers. Our study tracked 50 specimens over 6 months, measuring the frequency of bleps relative to environmental comfort.
+                </p>
+                <h3 class="text-xl">3.1 Environmental Correlation</h3>
+                <p>
+                    The "Blep Threshold" is reached most frequently when:
+                </p>
+                <ul class="list-decimal ml-10 mt-4 space-y-2">
+                    <li>The specimen is sleeping in a position that defies the laws of physics.</li>
+                    <li>The specimen has forgotten what they were doing mid-lick.</li>
+                    <li>The central heating is set to precisely 72°F (22°C).</li>
+                </ul>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl">4. Thermodynamics of the "Snuggle"</h2>
+                <p>
+                    Snuggling is an exothermic reaction where heat is transferred from the pet to the human, typically resulting in "Pet Paralysis"—a state where the human refuses to move for fear of disturbing the sleeping creature. We measured the thermal conductivity of a 12lb Siamese cat and found it to be more efficient than most modern high-tech blankets.
+                </p>
+                <div class="my-10 p-4 border-l-4 border-slate-200 bg-slate-50 italic text-slate-700">
+                    "The heat generated by a purring cat is not just thermal energy; it is emotional stability in a fuzzy package." <br>— Anonymous Research Assistant
                 </div>
             </section>
 
-            <section class="mb-8">
-                <h2 class="text-xl mb-4">2. Methodology</h2>
+            <section class="mb-12">
+                <h2 class="text-2xl">5. The "Zoomie" Outbreak: Kinetic Energy in Domestic Spaces</h2>
                 <p>
-                    Data was compiled using long-baseline interferometry at wavelengths between 450nm and 700nm. Observations focused on the Orion Nebula Cluster (ONC) to establish a baseline for electron density measurements. The resulting data points were processed using standard luminosity functions to account for atmospheric extinction.
+                    A "Zoomie" (technically known as a Frenetic Random Activity Period or FRAP) is a sudden burst of energy characterized by high-speed laps around the living room. Our kinematic analysis shows that during a zoomie, a common tabby cat can reach speeds that rival small sports cars in scaled-down environments. The physics of the "wall-jump" during these periods remains a subject of intense debate among our staff scientists.
                 </p>
-                <p class="mt-4">
-                    The classification of these regions depends heavily on the 'Nebula' index, a metric derived from the ratio of oxygen to nitrogen emissions. High-nebula sectors often exhibit increased complexity in their internal core structures, necessitating advanced neural synchronization for accurate mapping.
-                </p>
+                <div class="flex justify-center my-8">
+                     <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800" alt="Cat jump" class="w-full h-auto rounded-xl border border-slate-200 grayscale shadow-inner opacity-80">
+                </div>
+                <p class="text-center text-xs text-slate-400">Fig 5.1: High-speed photography capturing the exact moment a zoomie begins.</p>
             </section>
 
-            <footer class="mt-20 pt-8 border-t border-slate-100 text-xs text-slate-400">
-                <p>&copy; 2024 Institutional Archive for Space Research. All rights reserved. Access restricted to authorized personnel.</p>
+            <section class="mb-12">
+                <h2 class="text-2xl">6. Conclusion and Future Projections</h2>
+                <p>
+                    In summary, the sheer cuteness of dogs and cats is an undeniable force of nature. Their ability to look "really fluffy" and "super cute" is not just a biological coincidence, but a masterful adaptation to a world that needs more smiles. Future studies will explore the impact of tiny sweaters on feline dignity and the optimal frequency of "booping the snoot."
+                </p>
+                <p class="mt-8 font-bold">Recommendations for the Public:</p>
+                <ol class="list-disc ml-10 space-y-1">
+                    <li>Maintain a minimum of 3 head-pats per hour.</li>
+                    <li>Ensure treats are stored in accessible but "secret" locations.</li>
+                    <li>Acknowledge every meow or bark with a polite verbal response.</li>
+                </ol>
+            </section>
+
+            <footer class="mt-20 pt-8 border-t border-slate-200 text-xs text-slate-500">
+                <p class="mb-2 uppercase tracking-widest font-bold">References</p>
+                <p>1. Barkington, J. (2022). <i>Why the Ball is Life: A Retrospective.</i> Bone Press.</p>
+                <p>2. Mittens, C. (2021). <i>3 AM Singing: How to Wake Up the Whole House.</i> Fish & Feathers Publishing.</p>
+                <p>3. Rosewood, E. (2024). <i>Qualitative Assessments of Fluff.</i> Pet Morph Quarterly.</p>
+                <div class="mt-8 text-slate-300">
+                    &copy; 2024 Institutional Archive for Advanced Adorability. No animals were under-snuggled during this research.
+                </div>
             </footer>
         </div>
     </div>
 
     <!-- SECRET: The Gaming Portal -->
     <div id="secret-portal">
-        <!-- Panic Switch (Nearly invisible) -->
-        <div id="panic-button" class="panic-btn" title="Panic Toggle"></div>
+        <!-- Panic Switches -->
+        <div id="panic-button" class="panic-btn" title="Stealth Toggle Bottom"></div>
+        <div id="panic-button-top" class="panic-btn-top">PANIC</div>
 
         <!-- Header / Search -->
         <nav class="fixed top-0 left-0 right-0 h-16 glass border-b border-slate-800/50 z-50 px-6 flex items-center justify-between">
@@ -195,7 +306,7 @@
                 </div>
                 <div>
                     <span class="text-xl font-black tracking-[0.2em] text-sky-400">NEBULA</span>
-                    <span class="text-[10px] text-slate-500 font-bold ml-2 uppercase opacity-60">v4.0 (Stable)</span>
+                    <span class="text-[10px] text-slate-500 font-bold ml-2 uppercase opacity-60">v4.1 (Stable)</span>
                 </div>
             </div>
 
@@ -211,7 +322,7 @@
                 />
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 pr-16"> <!-- Added padding for the big panic button -->
                 <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-sky-400">P</div>
             </div>
         </nav>
@@ -287,6 +398,7 @@
         const secretPortal = document.getElementById('secret-portal');
         const unlockTrigger = document.getElementById('unlock-trigger');
         const panicButton = document.getElementById('panic-button');
+        const panicButtonTop = document.getElementById('panic-button-top');
 
         function toggleStealth(showSecret) {
             if (showSecret) {
@@ -298,14 +410,15 @@
                 publicProject.style.display = 'block';
                 secretPortal.style.display = 'none';
                 document.body.className = "bg-white";
-                document.title = "Academic Research Portal - Nebula Analysis";
+                document.title = "Academic Research Portal - Pet Morphology";
             }
         }
 
         unlockTrigger.addEventListener('click', () => toggleStealth(true));
         panicButton.addEventListener('click', () => toggleStealth(false));
+        panicButtonTop.addEventListener('click', () => toggleStealth(false));
 
-        // --- Starter Data (V4.0.0) ---
+        // --- Starter Data (V4.1.0) ---
         const starterGames = [
             {
                 id: 'slope',
